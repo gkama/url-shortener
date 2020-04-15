@@ -22,12 +22,12 @@ stages:
       displayName: restore
       inputs:
         command: restore
-        projects: url.shotener.core/url.shortener.core.csproj
+        projects: url.shortener.core/url.shortener.core.csproj
     - task: DotNetCoreCLI@2
       displayName: test
       inputs:
         command: test
-        projects: url.shotener.tests/url.shotener.tests.csproj
+        projects: url.shortener.tests/url.shotener.tests.csproj
     - task: DotNetCoreCLI@2
       displayName: publish
       inputs:
