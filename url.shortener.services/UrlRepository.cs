@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace url.shortener.services
 {
-    public class UrlRepository
+    public class UrlRepository : IUrlRepository
     {
         private readonly ILogger<UrlRepository> _logger;
 
