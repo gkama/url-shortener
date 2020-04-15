@@ -8,6 +8,7 @@ variables:
   configuration: release
   targetFramework: netcoreapp3.1
   projectFile: url.shortener.core/url.shortener.core.csproj
+  tag: $(Build.BuildId)
 
 stages:
 - stage: Build
@@ -47,5 +48,4 @@ stages:
         command: buildAndPush
         Dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
-          $(Build.BuildId)
           latest
