@@ -15,10 +15,6 @@ namespace url.shortener.data
             : base(options)
         { }
 
-        public UrlContext()
-        { }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GkamaUrl>(e =>
