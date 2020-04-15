@@ -7,6 +7,7 @@ resources:
 variables:
   configuration: release
   targetFramework: netcoreapp3.1
+  projectFile: url.shortener.core/url.shortener.core.csproj
   tag: $(Build.BuildId)
 
 stages:
@@ -22,7 +23,12 @@ stages:
       displayName: restore
       inputs:
         command: restore
-        projects: url.shortener.core/url.shortener.core.csproj
+        projects: $(projectFile)
+    - task: DotNetCoreCLI@2
+      displayName: build
+      inputs:
+        command: build
+        projects: $(projectFile)
     - task: DotNetCoreCLI@2
       displayName: test
       inputs:
