@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\url.shortener.data\url.shortener.data.csproj" />
+  </ItemGroup>
+
 </Project>
