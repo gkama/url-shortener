@@ -13,6 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using url.shortener.data;
+using url.shortener.services;
+
 namespace url.shortener.core
 {
     public class Startup
@@ -27,6 +30,8 @@ namespace url.shortener.core
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IUrlRepository, UrlRepository>();
+
             services.AddHealthChecks();
 
             services.AddControllers();
