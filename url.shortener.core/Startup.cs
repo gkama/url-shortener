@@ -8,11 +8,9 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 using url.shortener.data;
 using url.shortener.services;
@@ -58,14 +56,12 @@ namespace url.shortener.core
                 app.UseDeveloperExceptionPage();
 
                 services.GetRequiredService<FakeManager>()
-                    .UseFakeContextAsync()
-                    .Wait();
+                    .UseFakeContext();
             }
 
             app.UseHealthChecks("/ping");
 
             app.UseRouting();
-            app.UseAuthorization();
             app.UseEndpoints(e =>
             {
                 e.MapControllers();

@@ -10,22 +10,18 @@ namespace url.shortener.data
     public class FakeManager
     {
         private readonly UrlContext _context;
-        private readonly ILogger<FakeManager> _logger;
 
-        public FakeManager(UrlContext context, ILogger<FakeManager> logger)
+        public FakeManager(UrlContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task UseFakeContextAsync()
+        public void UseFakeContext()
         {
-            await _context.Urls
-                .AddRangeAsync(GetFakeGkamaUrls());
+            _context.Urls
+                .AddRange(GetFakeGkamaUrls());
 
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation($"updated the database with fake gkama urls");
+            _context.SaveChanges();
         }
 
         public IEnumerable<GkamaUrl> GetFakeGkamaUrls()
