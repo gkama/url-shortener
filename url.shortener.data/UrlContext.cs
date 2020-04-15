@@ -10,18 +10,14 @@ namespace url.shortener.data
     public class UrlContext : DbContext
     {
         public virtual DbSet<GkamaUrl> Urls { get; set; }
-
-        public UrlContext()
-        { }
-
+ 
         public UrlContext(DbContextOptions<UrlContext> options)
             : base(options)
         { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("host=postgres;database=url;port=5432;username=root;password=root");
-        }
+        public UrlContext()
+        { }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
