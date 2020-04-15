@@ -10,12 +10,12 @@ namespace url.shortener.core.Controllers
 {
     [ApiController]
     [Route("api")]
-    public class WeatherForecastController : ControllerBase
+    public class UrlController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("");
+            return Ok("test");
         }
     }
 }
