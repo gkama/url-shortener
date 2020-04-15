@@ -32,6 +32,7 @@ namespace url.shortener.core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUrlRepository, UrlRepository>();
+            services.AddScoped<FakeManager>();
 
             services.AddDbContext<UrlContext>(o =>
             {
@@ -49,11 +50,15 @@ namespace url.shortener.core
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                services.GetRequiredService<FakeManager>()
+                    .UseFakeContextAsync()
+                    .Wait();
             }
 
             app.UseHealthChecks("/ping");

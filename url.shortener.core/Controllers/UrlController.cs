@@ -22,9 +22,10 @@ namespace url.shortener.core.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        [Route("all")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok("test");
+            return Ok(await _repo.GetUrlsAsync());
         }
     }
 }
