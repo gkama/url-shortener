@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,11 @@ namespace url.shortener.core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUrlRepository, UrlRepository>();
+
+            services.AddDbContext<UrlContext>(o =>
+            {
+                o.UseNpgsql(_configuration.GetConnectionString("PostgreSQL"));
+            });
 
             services.AddHealthChecks();
 
