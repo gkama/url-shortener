@@ -32,5 +32,23 @@ namespace url.shortener.services
             return await GetGkamaUrlsQuery()
                 .ToListAsync();
         }
+
+        public async Task<IGkamaUrl> GetUrlAsync(int id)
+        {
+            return await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IGkamaUrl> GetUrlAsync(Guid publicKey)
+        {
+            return await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.PublicKey == publicKey);
+        }
+
+        public async Task<IGkamaUrl> GetUrlAsync(string target)
+        {
+            return await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.Target == target);
+        }
     }
 }
