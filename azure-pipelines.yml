@@ -5,21 +5,40 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  configuration: release
+  targetFramework: netcoreapp3.1
+  tag: $(Build.BuildId)
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build
   jobs:  
   - job: Build
     displayName: Build
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      displayName: Build an image
+    - task: DotNetCoreCLI@2
+      displayName: restore
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        command: restore
+        projects: url.shortener.core/url.shortener.core.csproj
+    - task: DotNetCoreCLI@2
+      displayName: test
+      inputs:
+        command: test
+        projects: url.shortener.tests/url.shotener.tests.csproj
+    - task: DotNetCoreCLI@2
+      displayName: publish
+      inputs:
+        command: publish
+        arguments: --configuration $(configuration) --framework=$(targetFramework)
+    - task: Docker@2
+      displayName: docker build and push
+      inputs:
+        containerRegistry: gkama-docker-cr
+        repository: gkama/url-shortener
+        command: buildAndPush
+        Dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
           $(tag)
