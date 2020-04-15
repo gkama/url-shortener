@@ -28,10 +28,9 @@ namespace url.shortener.core
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUrlRepository, UrlRepository>();
+            services.AddScoped<IUrlRepository, UrlRepository>();
             services.AddScoped<FakeManager>();
 
             services.AddDbContext<UrlContext>(o =>
@@ -55,19 +54,15 @@ namespace url.shortener.core
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                services.GetRequiredService<FakeManager>()
-                    .UseFakeContextAsync()
-                    .Wait();
             }
 
             app.UseHealthChecks("/ping");
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(e =>
             {
-                endpoints.MapControllers();
+                e.MapControllers();
             });
         }
     }
