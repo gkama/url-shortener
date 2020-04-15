@@ -27,8 +27,9 @@ namespace url.shortener.core
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddHealthChecks();
 
+            services.AddControllers();
             services.AddMvcCore()
                 .AddJsonOptions(o =>
                 {
@@ -43,6 +44,8 @@ namespace url.shortener.core
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHealthChecks("/ping");
 
             app.UseRouting();
             app.UseAuthorization();
