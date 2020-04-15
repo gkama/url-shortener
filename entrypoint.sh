@@ -3,7 +3,7 @@ set -e
 
 run_cmd="dotnet run"
 
-until dotnet ef database update -p url.shotener.data; do
+until dotnet ef database update -p /app/url.shortener.data; do
 >&2 echo "PostgreSQL server is starting up"
 sleep 1
 done
