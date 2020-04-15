@@ -37,7 +37,7 @@ stages:
       displayName: publish
       inputs:
         command: publish
-        arguments: -c $(configuration) -o app/publish --framework=$(targetFramework)
+        arguments: -c $(configuration) -o app/publish -f $(targetFramework)
         zipAfterPublish: false
     - task: Docker@2
       displayName: docker build and push
