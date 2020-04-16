@@ -30,6 +30,7 @@ namespace url.shortener.services
         public async Task<IEnumerable<IGkamaUrl>> GetUrlsAsync()
         {
             return await GetGkamaUrlsQuery()
+                .OrderBy(x => x.Target)
                 .ToListAsync();
         }
 
