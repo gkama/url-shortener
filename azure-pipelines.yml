@@ -7,6 +7,7 @@ resources:
 variables:
   configuration: release
   targetFramework: netcoreapp3.1
+  projectFile: url.shortener.core/url.shortener.core.csproj
   tag: $(Build.BuildId)
 
 stages:
@@ -22,19 +23,24 @@ stages:
       displayName: restore
       inputs:
         command: restore
-        projects: url.shortener.core/url.shortener.core.csproj
+        projects: $(projectFile)
+    - task: DotNetCoreCLI@2
+      displayName: build
+      inputs:
+        command: build
+        projects: $(projectFile)
     - task: DotNetCoreCLI@2
       displayName: test
       inputs:
         command: test
-        projects: url.shortener.tests/url.shotener.tests.csproj
+        projects: url.shortener.tests/url.shortener.tests.csproj
+        publishTestResults: false
     - task: DotNetCoreCLI@2
       displayName: publish
       inputs:
         command: publish
-        arguments: --configuration $(configuration) --framework=$(targetFramework)
-        publishWebProjects: true
-        zipAfterPublish: true
+        arguments: -c $(configuration) -o app/publish -f $(targetFramework)
+        zipAfterPublish: false
     - task: Docker@2
       displayName: docker build and push
       inputs:
@@ -43,4 +49,4 @@ stages:
         command: buildAndPush
         Dockerfile: $(Build.SourcesDirectory)/Dockerfile
         tags: |
-          $(tag)
+          latest

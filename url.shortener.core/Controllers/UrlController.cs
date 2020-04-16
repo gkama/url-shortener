@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using url.shortener.services;
 
 namespace url.shortener.core.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("url")]
     public class UrlController : ControllerBase
     {
         private readonly IUrlRepository _repo;
@@ -22,9 +21,24 @@ namespace url.shortener.core.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        [Route("all")]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok("test");
+            return Ok(await _repo.GetUrlsAsync());
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUrlAsync([FromRoute]object id)
+        {
+            return Ok(await _repo.GetUrlAsync(id));
+        }
+
+        [HttpGet]
+        [Route("target/{target}")]
+        public async Task<IActionResult> GetUrlAsync([FromRoute]string target)
+        {
+            return Ok(await _repo.GetUrlAsync(target));
         }
     }
 }
