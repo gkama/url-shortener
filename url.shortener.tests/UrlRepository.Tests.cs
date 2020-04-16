@@ -71,14 +71,14 @@ namespace url.shortener.tests
         }
 
         [Theory]
-        [InlineData("https://google.com")]
-        public async Task GetUrlAsync_ByTarget(string target)
+        [InlineData("https://gkama.it/london")]
+        public async Task GetUrlAsync_ByShortUrl(string shortUrl)
         {
-            var url = await _repo.GetUrlAsync(target);
+            var url = await _repo.GetUrlAsync(shortUrl);
 
             Assert.NotNull(url);
-            Assert.NotNull(url.Target);
-            Assert.Equal(target, url.Target);
+            Assert.NotNull(url.ShortUrl);
+            Assert.Equal(shortUrl, url.ShortUrl);
         }
 
         [Theory]
