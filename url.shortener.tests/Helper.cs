@@ -31,7 +31,6 @@ namespace url.shortener.tests
             services.AddDbContext<UrlContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
             services.AddLogging();
-            services.AddMemoryCache();
 
             return services.BuildServiceProvider();
         }
