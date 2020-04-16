@@ -34,7 +34,7 @@ namespace url.shortener.core
             services.AddScoped<FakeManager>();
 
             if (_env.IsDevelopment())
-                services.AddDbContext<UrlContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+                services.AddDbContext<UrlContext>(o => o.UseInMemoryDatabase(nameof(UrlContext)));
             else
                 services.AddDbContext<UrlContext>(o => o.UseNpgsql(_configuration.GetConnectionString("PostgreSQL")));
 
