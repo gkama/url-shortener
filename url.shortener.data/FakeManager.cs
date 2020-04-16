@@ -31,14 +31,14 @@ namespace url.shortener.data
                 new GkamaUrl()
                 {
                     PublicKey = new Guid("a733b9f0-d716-40b4-921b-aef79b2f1a04"),
-                    Target = "https://google.com",
-                    ShortUrl = "https://gkama.it/g"
+                    Target = "https://www.google.com/maps/place/London,+UK/@51.5287718,-0.2416793,11z/data=!3m1!4b1!4m5!3m4!1s0x47d8a00baf21de75:0x52963a5addd52a99!8m2!3d51.5073509!4d-0.1277583",
+                    ShortUrl = "https://gkama.it/london"
                 },
                 new GkamaUrl()
                 {
                     PublicKey = new Guid("2f340700-a698-4644-a6a2-069f73b92ad4"),
-                    Target = "https://google.com",
-                    ShortUrl = "https://gkama.it/google"
+                    Target = "https://www.google.com/maps/place/Sydney+NSW,+Australia/@-33.8478796,150.7918936,11z/data=!3m1!4b1!4m5!3m4!1s0x6b129838f39a743f:0x3017d681632a850!8m2!3d-33.8688197!4d151.2092955",
+                    ShortUrl = "https://gkama.it/sydney"
                 }
             };
         }
