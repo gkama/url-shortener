@@ -28,10 +28,17 @@ namespace url.shortener.core.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetUrlAsync([FromRoute]object id)
+        [Route("id/{id}")]
+        public async Task<IActionResult> GetUrlAsync([FromRoute]int id)
         {
             return Ok(await _repo.GetUrlAsync(id));
+        }
+
+        [HttpGet]
+        [Route("publickey/{publickey}")]
+        public async Task<IActionResult> GetUrlAsync([FromRoute]Guid publickey)
+        {
+            return Ok(await _repo.GetUrlAsync(publickey));
         }
 
         [HttpGet]
