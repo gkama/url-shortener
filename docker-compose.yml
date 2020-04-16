@@ -3,6 +3,7 @@ version: "3.7"
 services:
   urlshortener:
     image: gkama/url-shortener
+    container_name: url-shortener
     depends_on:
       - postgres
     ports:
@@ -12,6 +13,7 @@ services:
 
   postgres:
     image: postgres
+    container_name: postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
