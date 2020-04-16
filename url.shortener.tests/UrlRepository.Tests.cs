@@ -17,27 +17,8 @@ namespace url.shortener.tests
 
         public UrlRepositoryTests()
         {
-            var provider = Provider();
-
-            _repo = provider.GetRequiredService<IUrlRepository>() ?? throw new ArgumentNullException();
-
-            provider.GetRequiredService<FakeManager>()
-                .UseFakeContext();
-        }
-
-        private IServiceProvider Provider()
-        {
-            var services = new ServiceCollection();
-
-            services.AddScoped<IUrlRepository, UrlRepository>();
-            services.AddScoped<FakeManager>();
-
-            services.AddDbContext<UrlContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-            services.AddLogging();
-            services.AddMemoryCache();
-
-            return services.BuildServiceProvider();
+            _repo = new Helper<IUrlRepository>()
+                .GetRequiredService() ?? throw new ArgumentNullException();
         }
 
         [Theory]
