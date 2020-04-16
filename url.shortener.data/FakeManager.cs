@@ -30,11 +30,13 @@ namespace url.shortener.data
             {
                 new GkamaUrl()
                 {
+                    PublicKey = new Guid("a733b9f0-d716-40b4-921b-aef79b2f1a04"),
                     Target = "https://google.com",
                     ShortUrl = "https://gkama.it/g"
                 },
                 new GkamaUrl()
                 {
+                    PublicKey = new Guid("2f340700-a698-4644-a6a2-069f73b92ad4"),
                     Target = "https://google.com",
                     ShortUrl = "https://gkama.it/google"
                 }

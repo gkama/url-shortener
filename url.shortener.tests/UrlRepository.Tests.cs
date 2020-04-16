@@ -35,6 +35,19 @@ namespace url.shortener.tests
         }
 
         [Theory]
+        [InlineData("a733b9f0-d716-40b4-921b-aef79b2f1a04")]
+        [InlineData("2f340700-a698-4644-a6a2-069f73b92ad4")]
+        public async Task GetUrlAsync_ByPublicKey_Valid(string publicKey)
+        {
+            var urlPublicKey = new Guid(publicKey);
+            var url = await _repo.GetUrlAsync(urlPublicKey);
+
+            Assert.NotNull(url);
+            Assert.Equal(urlPublicKey, url.PublicKey);
+            Assert.NotNull(url.Target);
+        }
+
+        [Theory]
         [InlineData(997)]
         [InlineData(998)]
         [InlineData(999)]
