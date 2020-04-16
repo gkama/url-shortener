@@ -39,6 +39,7 @@ namespace url.shortener.core
                 services.AddDbContext<UrlContext>(o => o.UseNpgsql(_configuration.GetConnectionString("PostgreSQL")));
 
             services.AddHealthChecks();
+            services.AddLogging();
 
             services.AddControllers();
             services.AddMvcCore()
