@@ -54,17 +54,6 @@ namespace url.shortener.tests
         }
 
         [Theory]
-        [InlineData("https://google.com")]
-        public async Task GetUrlAsync_ByTarget(string target)
-        {
-            var url = await _repo.GetUrlAsync(target);
-
-            Assert.NotNull(url);
-            Assert.NotNull(url.Target);
-            Assert.Equal(target, url.Target);
-        }
-
-        [Theory]
         [InlineData(1)]
         [InlineData(2)]
         [InlineData("a733b9f0-d716-40b4-921b-aef79b2f1a04")]
@@ -79,6 +68,17 @@ namespace url.shortener.tests
 
             Assert.NotNull(url);
             Assert.NotEqual(Guid.Empty, url.PublicKey);
+        }
+
+        [Theory]
+        [InlineData("https://google.com")]
+        public async Task GetUrlAsync_ByTarget(string target)
+        {
+            var url = await _repo.GetUrlAsync(target);
+
+            Assert.NotNull(url);
+            Assert.NotNull(url.Target);
+            Assert.Equal(target, url.Target);
         }
 
         [Theory]
