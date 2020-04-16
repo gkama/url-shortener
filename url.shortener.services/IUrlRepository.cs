@@ -12,7 +12,6 @@ namespace url.shortener.services
         Task<IEnumerable<IGkamaUrl>> GetUrlsAsync();
         Task<IGkamaUrl> GetUrlAsync(int id);
         Task<IGkamaUrl> GetUrlAsync(Guid publicKey);
-        Task<IGkamaUrl> GetUrlAsync(string target);
-        Task<IGkamaUrl> GetUrlAsync(object publicKeyId);
+        Task<IGkamaUrl> GetUrlAsync(string shortUrl);
     }
 }

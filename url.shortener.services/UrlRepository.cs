@@ -46,20 +46,10 @@ namespace url.shortener.services
                 .FirstOrDefaultAsync(x => x.PublicKey == publicKey);
         }
 
-        public async Task<IGkamaUrl> GetUrlAsync(string target)
+        public async Task<IGkamaUrl> GetUrlAsync(string shortUrl)
         {
             return await GetGkamaUrlsQuery()
-                .FirstOrDefaultAsync(x => x.Target == target);
-        }
-
-        public async Task<IGkamaUrl> GetUrlAsync(object publicKeyId)
-        {
-            if (publicKeyId is int)
-                return await GetUrlAsync((int)publicKeyId);
-            else if (publicKeyId is Guid)
-                return await GetUrlAsync((Guid)publicKeyId);
-
-            return null;
+                .FirstOrDefaultAsync(x => x.ShortUrl == shortUrl);
         }
     }
 }

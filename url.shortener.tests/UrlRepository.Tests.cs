@@ -54,31 +54,14 @@ namespace url.shortener.tests
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData("a733b9f0-d716-40b4-921b-aef79b2f1a04")]
-        [InlineData("2f340700-a698-4644-a6a2-069f73b92ad4")]
-        public async Task GetUrlAsync_PublicKeyId(object id)
+        [InlineData("https://gkama.it/london")]
+        public async Task GetUrlAsync_ByShortUrl(string shortUrl)
         {
-            var publicKeyId = id is string
-                ? new Guid(id.ToString())
-                : id;
-
-            var url = await _repo.GetUrlAsync(publicKeyId);
+            var url = await _repo.GetUrlAsync(shortUrl);
 
             Assert.NotNull(url);
-            Assert.NotEqual(Guid.Empty, url.PublicKey);
-        }
-
-        [Theory]
-        [InlineData("https://google.com")]
-        public async Task GetUrlAsync_ByTarget(string target)
-        {
-            var url = await _repo.GetUrlAsync(target);
-
-            Assert.NotNull(url);
-            Assert.NotNull(url.Target);
-            Assert.Equal(target, url.Target);
+            Assert.NotNull(url.ShortUrl);
+            Assert.Equal(shortUrl, url.ShortUrl);
         }
 
         [Theory]
