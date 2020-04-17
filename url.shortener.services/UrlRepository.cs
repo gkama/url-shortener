@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,6 +26,7 @@ namespace url.shortener.services
         private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
         {
             return _context.Urls
+                .AsNoTracking()
                 .AsQueryable();
         }
 
@@ -50,6 +53,24 @@ namespace url.shortener.services
         {
             return await GetGkamaUrlsQuery()
                 .FirstOrDefaultAsync(x => x.ShortUrl == shortUrl);
+        }
+
+        public async Task<IGkamaUrl> ShortenUrlAsync(int id)
+        {
+            var url = await GetUrlAsync(id);
+
+            url.ShortUrl = string.IsNullOrWhiteSpace(url.ShortUrl)
+                ? $"https://gkama.it/{url.Id}"
+                : throw new Exception($"url='{JsonSerializer.Serialize(url)}'");
+
+            await _context.SaveChangesAsync();
+
+            return url;
+        }
+
+        public async Task<IGkamaUrl> ShortenUrlAsync(GkamaUrl url)
+        {
+            return url;
         }
     }
 }

@@ -13,5 +13,6 @@ namespace url.shortener.services
         Task<IGkamaUrl> GetUrlAsync(int id);
         Task<IGkamaUrl> GetUrlAsync(Guid publicKey);
         Task<IGkamaUrl> GetUrlAsync(string shortUrl);
+        Task<IGkamaUrl> ShortenUrlAsync(int id);
     }
 }
