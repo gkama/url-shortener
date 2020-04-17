@@ -60,7 +60,7 @@ namespace url.shortener.services
             var url = await GetUrlAsync(id);
 
             url.ShortUrl = string.IsNullOrWhiteSpace(url.ShortUrl)
-                ? $"https://gkama.it/{url.Target}"
+                ? $"https://gkama.it/{url.Id}"
                 : throw new Exception($"url='{JsonSerializer.Serialize(url)}'");
 
             await _context.SaveChangesAsync();
