@@ -67,5 +67,10 @@ namespace url.shortener.services
 
             return url;
         }
+
+        public async Task<IGkamaUrl> ShortenUrlAsync(GkamaUrl url)
+        {
+            return url;
+        }
     }
 }
