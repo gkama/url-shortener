@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -55,6 +56,13 @@ namespace url.shortener.services
                 .FirstOrDefaultAsync(x => x.ShortUrl == shortUrl);
         }
 
+        public async Task<IGkamaUrl> GetUrlAsync(string target, string shortUrl)
+        {
+            return await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.Target == target
+                    && x.ShortUrl == shortUrl);
+        }
+
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
         {
             var url = await GetUrlAsync(id);
@@ -70,6 +78,12 @@ namespace url.shortener.services
 
         public async Task<IGkamaUrl> ShortenUrlAsync(GkamaUrl url)
         {
+            if (await GetUrlAsync(url.Id) != null)
+                throw new UrlException(HttpStatusCode.BadRequest,
+                    $"url already exists. url='{JsonSerializer.Serialize(url)}'");
+
+            //TODO: update algorithm
+
             return url;
         }
     }
