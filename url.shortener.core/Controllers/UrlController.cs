@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
+using url.shortener.data;
 using url.shortener.services;
 
 namespace url.shortener.core.Controllers
@@ -46,6 +47,13 @@ namespace url.shortener.core.Controllers
         public async Task<IActionResult> GetUrlAsync([FromRoute]string target)
         {
             return Ok(await _repo.GetUrlAsync(target));
+        }
+
+        [HttpGet]
+        [Route("throw/exception/400")]
+        public IActionResult ThrowException()
+        {
+            throw new UrlException(System.Net.HttpStatusCode.BadRequest, $"testing errors");
         }
     }
 }

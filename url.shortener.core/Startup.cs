@@ -60,6 +60,7 @@ namespace url.shortener.core
                     .UseFakeContext();
             }
 
+            app.UseUrlException();
             app.UseHealthChecks("/ping");
 
             app.UseRouting();
