@@ -67,7 +67,7 @@ namespace url.shortener.core
                 Detail = canViewSensitiveInfo
                     ? e.Demystify().ToString()
                     : null,
-                Instance = $"nlp:error:{id}"
+                Instance = $"url:error:{id}"
             };
 
             if (e is UrlException ue)
