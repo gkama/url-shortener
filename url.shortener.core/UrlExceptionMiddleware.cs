@@ -17,17 +17,16 @@ namespace url.shortener.core
 {
     public class UrlExceptionMiddleware
     {
-
         private readonly RequestDelegate _next;
-        private readonly ILogger _log;
+        private readonly ILogger _logger;
         private readonly IWebHostEnvironment _env;
 
         private const string _defaultMessage = "An unexpected error has occurred.";
 
-        public UrlExceptionMiddleware(RequestDelegate next, ILogger<UrlExceptionMiddleware> log, IWebHostEnvironment env)
+        public UrlExceptionMiddleware(RequestDelegate next, ILogger<UrlExceptionMiddleware> logger, IWebHostEnvironment env)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
-            _log = log ?? throw new ArgumentNullException(nameof(log));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _env = env ?? throw new ArgumentNullException(nameof(env));
         }
 
@@ -41,7 +40,7 @@ namespace url.shortener.core
             {
                 if (httpContext.Response.HasStarted)
                 {
-                    _log.LogWarning("The response has already started, the http status code middleware will not be executed.");
+                    _logger.LogWarning("The response has already started, the http status code middleware will not be executed.");
                     throw;
                 }
 
@@ -49,7 +48,7 @@ namespace url.shortener.core
                     ? Guid.NewGuid().ToString()
                     : httpContext.TraceIdentifier;
 
-                _log.LogError(e, $"an exception was thrown during the request. {id}");
+                _logger.LogError(e, $"an exception was thrown during the request. {id}");
 
                 await WriteExceptionResponseAsync(httpContext, e, id);
             }
