@@ -18,9 +18,6 @@ namespace url.shortener.services
         private readonly UrlContext _context;
         private readonly ILogger<UrlRepository> _logger;
 
-        private static readonly string _baseUrl = "https://gkama.it/";
-        private static readonly char[] _alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
-
         public UrlRepository(UrlContext context, ILogger<UrlRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -109,7 +106,7 @@ namespace url.shortener.services
         {
             return string.Create(8, 2, (buffer, value) =>
             {
-                var alphaNumeric = _alphaNumeric;
+                var alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".AsSpan();
                 var random = new Random();
 
                 buffer[7] = alphaNumeric[random.Next(alphaNumeric.Length)];
