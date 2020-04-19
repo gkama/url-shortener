@@ -55,5 +55,12 @@ namespace url.shortener.core.Controllers
         {
             throw new UrlException(System.Net.HttpStatusCode.BadRequest, $"testing errors");
         }
+
+        [HttpGet]
+        [Route("random")]
+        public IActionResult GetRandomString()
+        {
+            return Ok(_repo.RandomString());
+        }
     }
 }
