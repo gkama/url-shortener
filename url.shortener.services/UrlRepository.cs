@@ -18,6 +18,9 @@ namespace url.shortener.services
         private readonly UrlContext _context;
         private readonly ILogger<UrlRepository> _logger;
 
+        private static readonly string _baseUrl = "https://gkama.it/";
+        private static readonly char[] _alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
+
         public UrlRepository(UrlContext context, ILogger<UrlRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -63,12 +66,29 @@ namespace url.shortener.services
                     && x.ShortUrl == shortUrl);
         }
 
+        public async Task<IGkamaUrl> AddUrlAsync(string target, string shortUrl = null, bool shorten = false)
+        {
+            var url = new GkamaUrl()
+            {
+                Target = target
+            };
+
+            await _context.Urls
+                .AddAsync(url);
+
+            return url;
+        }
+
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
         {
             var url = await GetUrlAsync(id);
 
+            if (url == null)
+                throw new UrlException(HttpStatusCode.BadRequest,
+                    $"url with id='{id}' doesn't exist in our records");
+
             url.ShortUrl = string.IsNullOrWhiteSpace(url.ShortUrl)
-                ? $"https://gkama.it/{url.Id}"
+                ? $"https://gkama.it/{url.PublicKey}"
                 : throw new Exception($"url='{JsonSerializer.Serialize(url)}'");
 
             await _context.SaveChangesAsync();
@@ -82,9 +102,25 @@ namespace url.shortener.services
                 throw new UrlException(HttpStatusCode.BadRequest,
                     $"url already exists. url='{JsonSerializer.Serialize(url)}'");
 
-            //TODO: update algorithm
-
             return url;
+        }
+
+        public string RandomString()
+        {
+            return string.Create(8, 2, (buffer, value) =>
+            {
+                var alphaNumeric = _alphaNumeric;
+                var random = new Random();
+
+                buffer[7] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[6] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[5] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[4] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[3] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[2] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[1] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[0] = alphaNumeric[random.Next(alphaNumeric.Length)];
+            });
         }
     }
 }
