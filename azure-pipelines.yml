@@ -8,6 +8,7 @@ variables:
   configuration: release
   targetFramework: netcoreapp3.1
   projectFile: url.shortener.core/url.shortener.core.csproj
+  projectFileTest: url.shortener.tests/url.shortener.tests.csproj
   tag: $(Build.BuildId)
 
 stages:
@@ -33,7 +34,7 @@ stages:
       displayName: test
       inputs:
         command: test
-        projects: url.shortener.tests/url.shortener.tests.csproj
+        projects: $(projectFileTest)
         publishTestResults: false
     - task: DotNetCoreCLI@2
       displayName: publish
