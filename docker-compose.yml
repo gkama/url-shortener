@@ -7,14 +7,18 @@ services:
     depends_on:
       - postgres
     ports:
-      - 8080:80
+      - 8080:5000
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
+      DB_HOST: postgres
+      DB_NAME: url
+      DB_USER: root
+      DB_PASSWORD: root
 
   postgres:
     image: postgres
     container_name: postgres
     environment:
+      POSTGRES_DB: url
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: url
