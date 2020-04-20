@@ -30,6 +30,7 @@ stages:
       inputs:
         command: build
         projects: $(projectFile)
+        arguments: -c $(configuration) -f $(targetFramework)
     - task: DotNetCoreCLI@2
       displayName: test
       inputs:
