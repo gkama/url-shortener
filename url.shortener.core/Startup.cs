@@ -36,7 +36,12 @@ namespace url.shortener.core
             if (_env.IsDevelopment())
                 services.AddDbContext<UrlContext>(o => o.UseInMemoryDatabase(nameof(UrlContext)));
             else
-                services.AddDbContext<UrlContext>(o => o.UseNpgsql(_configuration.GetConnectionString("PostgreSQL")));
+                services.AddDbContext<UrlContext>(o => 
+                    o.UseNpgsql(_configuration.GetConnectionString("PostgreSQL")
+                        .Replace("$DB_HOST", _configuration["DB_HOST"])
+                        .Replace("$DB_NAME", _configuration["DB_NAME"])
+                        .Replace("$DB_USER", _configuration["DB_USER"])
+                        .Replace("$DB_PASSWORD", _configuration["DB_PASSWORD"])));
 
             services.AddHealthChecks();
             services.AddLogging();
