@@ -85,30 +85,62 @@ namespace url.shortener.services
                     $"url with id='{id}' doesn't exist in our records");
 
             url.ShortUrl = string.IsNullOrWhiteSpace(url.ShortUrl)
-                ? $"https://gkama.it/{url.PublicKey}"
-                : throw new Exception($"url='{JsonSerializer.Serialize(url)}'");
+                ? ShortenUrl()
+                : throw new UrlException(HttpStatusCode.BadRequest,
+                    $"url has already been shortened. url='{JsonSerializer.Serialize(url)}'");
 
             await _context.SaveChangesAsync();
 
             return url;
         }
 
-        public async Task<IGkamaUrl> ShortenUrlAsync(GkamaUrl url)
+        public async Task<IGkamaUrl> ShortenUrlAsync(string target)
         {
-            if (await GetUrlAsync(url.Id) != null)
-                throw new UrlException(HttpStatusCode.BadRequest,
-                    $"url already exists. url='{JsonSerializer.Serialize(url)}'");
+            var urlInDb = await GetUrlAsync(target);
 
-            return url;
+            if (urlInDb == null)
+            {
+                var url = new GkamaUrl()
+                {
+                    Target = target,
+                    ShortUrl = ShortenUrl()
+                };
+
+                await _context.Urls
+                    .AddAsync(url);
+
+                await _context.SaveChangesAsync();
+
+                return url;
+            }
+            else if (urlInDb != null
+                && string.IsNullOrWhiteSpace(urlInDb.ShortUrl))
+            {
+                urlInDb.ShortUrl = ShortenUrl();
+
+                await _context.SaveChangesAsync();
+
+                return urlInDb;
+            }
+            else
+                throw new UrlException(HttpStatusCode.BadRequest,
+                    $"url already exists and is shortened. url='{JsonSerializer.Serialize(urlInDb)}'");
+        }
+
+        public string ShortenUrl()
+        {
+            return $"https://gkama.it/{RandomString()}";
         }
 
         public string RandomString()
         {
-            return string.Create(8, 2, (buffer, value) =>
+            return string.Create(10, 2, (buffer, value) =>
             {
-                var alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".AsSpan();
+                var alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_".AsSpan();
                 var random = new Random();
 
+                buffer[9] = alphaNumeric[random.Next(alphaNumeric.Length)];
+                buffer[8] = alphaNumeric[random.Next(alphaNumeric.Length)];
                 buffer[7] = alphaNumeric[random.Next(alphaNumeric.Length)];
                 buffer[6] = alphaNumeric[random.Next(alphaNumeric.Length)];
                 buffer[5] = alphaNumeric[random.Next(alphaNumeric.Length)];
