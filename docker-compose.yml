@@ -10,14 +10,15 @@ services:
       - 8080:80
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      DB_HOST: postgres
+      DB_NAME: url
       DB_USER: root
       DB_PASSWORD: root
-      DB_NAME: url
 
   postgres:
     image: postgres
     container_name: postgres
     environment:
+      POSTGRES_DB: url
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: url
