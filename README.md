@@ -8,10 +8,10 @@ Modern URL shortener
 ## How it works
 `/url/shorten` - all you need to specify is the target URL that needs to get shortened. Example:
 
-Reques
+Request
 ```json
 {
-	"target": "https://google.com/gokasokdoakdaaaaw123o"
+  "target": "https://google.com/gokasokdoakdaaaaw123o"
 }
 ```
 
