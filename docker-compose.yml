@@ -9,7 +9,10 @@ services:
     ports:
       - 8080:80
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: url
 
   postgres:
     image: postgres
