@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace url.shortener.data
 {
@@ -13,6 +14,14 @@ namespace url.shortener.data
         public UrlContext(DbContextOptions<UrlContext> options)
             : base(options)
         { }
+
+        public UrlContext()
+        { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("host=127.0.0.1;database=url;port=5432;username=root;password=root");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
