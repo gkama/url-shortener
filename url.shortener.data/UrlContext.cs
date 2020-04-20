@@ -22,6 +22,9 @@ namespace url.shortener.data
 
                 e.HasKey(x => x.Id);
 
+                e.HasIndex(x => x.ShortUrl)
+                    .IsUnique();
+
                 e.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
                 e.Property(x => x.PublicKey).HasColumnName("public_key").IsRequired();
                 e.Property(x => x.CreatedAt).HasColumnName("created_at").HasColumnType("datetime").IsRequired();
