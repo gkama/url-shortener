@@ -16,5 +16,9 @@
     <ProjectReference Include="..\url.shortener.data\url.shortener.data.csproj" />
     <ProjectReference Include="..\url.shortener.services\url.shortener.services.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" CopyToPublishDirectory="Always" />
+  </ItemGroup>
   
 </Project>
