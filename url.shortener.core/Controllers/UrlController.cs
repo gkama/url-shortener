@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -56,11 +57,11 @@ namespace url.shortener.core.Controllers
             throw new UrlException(System.Net.HttpStatusCode.BadRequest, $"testing errors");
         }
 
-        [HttpGet]
-        [Route("random")]
-        public IActionResult GetRandomString()
+        [HttpPost]
+        [Route("shorten")]
+        public async Task<IActionResult> ShortenUrlAsync([FromBody]JsonElement req)
         {
-            return Ok(_repo.RandomString());
+            return Ok(await _repo.ShortenUrlAsync(req.GetProperty("target").ToString()));
         }
     }
 }
