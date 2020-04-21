@@ -105,8 +105,6 @@ namespace url.shortener.tests
         public void ShortenUrl_ByTarget(string target)
         {
             var shortUrl = _repo.ShortenUrl(target);
-
-            Assert.NotNull(shortUrl);
         }
 
         [Theory]
