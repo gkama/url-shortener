@@ -4,6 +4,7 @@ Modern URL shortener
 ## Stack
 - ASP.NET Core 3.1
 - EntityFrameworkCore with PostgreSQL
+- Docker (docker-compose)
 
 ## How it works
 `/url/shorten` - all you need to specify is the target URL that needs to get shortened. Example:
@@ -25,6 +26,9 @@ Response
   "shortUrl": "https://gkama.it/Ore3vvu17J"
 }
 ```
+
+Randomly generating a 10 character long alphanumeric string to append to the shorten url. This is done via the `RandomString()` method.
+It uses `Span<T>` and `string.Create()` as the main methods of string creation
 
 ### Resources
 - [Adam Sitnik - Span - Introduction](https://adamsitnik.com/Span/#introduction)
