@@ -63,7 +63,7 @@ namespace url.shortener.services
                     && x.ShortUrl == shortUrl);
         }
 
-        public async Task<IGkamaUrl> AddUrlAsync(string target, string shortUrl = null, bool shorten = false)
+        public async Task<IGkamaUrl> AddUrlAsync(string target)
         {
             var url = new GkamaUrl()
             {
