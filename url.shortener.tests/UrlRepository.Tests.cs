@@ -101,6 +101,15 @@ namespace url.shortener.tests
         }
 
         [Theory]
+        [InlineData("https://google.com/test/ing")]
+        public void ShortenUrl_ByTarget(string target)
+        {
+            var shortUrl = _repo.ShortenUrl(target);
+
+            Assert.NotNull(shortUrl);
+        }
+
+        [Theory]
         [InlineData(5)]
         public async Task AddShortUrl_AlreadyExists_ViolatesUniqueness(int id)
         {
