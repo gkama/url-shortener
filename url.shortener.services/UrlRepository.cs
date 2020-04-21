@@ -76,6 +76,14 @@ namespace url.shortener.services
             return url;
         }
 
+        public async Task<IGkamaUrl> AddUrlAsync(GkamaUrl url)
+        {
+            await _context.Urls
+                .AddAsync(url);
+
+            return url;
+        }
+
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
         {
             var url = await GetUrlAsync(id);
