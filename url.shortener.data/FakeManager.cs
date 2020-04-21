@@ -47,6 +47,12 @@ namespace url.shortener.data
                     Id = 3,
                     PublicKey = new Guid("f7578931-6b73-4606-98ed-4dbfe5e2b0b8"),
                     Target = "https://www.google.com/maps/place/Sofia,+Bulgaria/@42.695537,23.2539074,12z/data=!3m1!4b1!4m5!3m4!1s0x40aa8682cb317bf5:0x400a01269bf5e60!8m2!3d42.6977082!4d23.3218675"
+                },
+                new GkamaUrl()
+                {
+                    Id = 4,
+                    PublicKey = new Guid("e6866071-382d-4176-864a-1e7b1aa73b67"),
+                    Target = "https://www.google.com/maps/place/Berlin,+Germany/@52.5069704,13.2846512,11z/data=!3m1!4b1!4m5!3m4!1s0x47a84e373f035901:0x42120465b5e3b70!8m2!3d52.5200066!4d13.404954"
                 }
             };
         }
