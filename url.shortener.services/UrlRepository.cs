@@ -123,6 +123,17 @@ namespace url.shortener.services
             return $"https://gkama.it/{RandomString()}";
         }
 
+        public string ShortenUrl(string target)
+        {
+            var parsedTarget = target.Replace("https://", "")
+                .Replace("http://", "")
+                .Replace("www.", "")
+                .Replace("www", "")
+                .Split("/");
+
+            return null;
+        }
+
         public string RandomString()
         {
             return string.Create(10, 2, (buffer, value) =>
