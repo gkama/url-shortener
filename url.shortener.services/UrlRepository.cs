@@ -96,35 +96,18 @@ namespace url.shortener.services
 
         public async Task<IGkamaUrl> ShortenUrlAsync(string target)
         {
-            var urlInDb = await GetUrlAsync(target);
-
-            if (urlInDb == null)
+            var url = new GkamaUrl()
             {
-                var url = new GkamaUrl()
-                {
-                    Target = target,
-                    ShortUrl = ShortenUrl()
-                };
+                Target = target,
+                ShortUrl = ShortenUrl()
+            };
 
-                await _context.Urls
-                    .AddAsync(url);
+            await _context.Urls
+                .AddAsync(url);
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return url;
-            }
-            else if (urlInDb != null
-                && string.IsNullOrWhiteSpace(urlInDb.ShortUrl))
-            {
-                urlInDb.ShortUrl = ShortenUrl();
-
-                await _context.SaveChangesAsync();
-
-                return urlInDb;
-            }
-            else
-                throw new UrlException(HttpStatusCode.BadRequest,
-                    $"url already exists and is shortened. url='{JsonSerializer.Serialize(urlInDb)}'");
+            return url;
         }
 
         public string ShortenUrl()

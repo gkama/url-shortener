@@ -74,5 +74,30 @@ namespace url.shortener.tests
 
             Assert.Null(url);
         }
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(4)]
+        public async Task ShortenUrlAsync_ById(int id)
+        {
+            var url = await _repo.ShortenUrlAsync(id);
+
+            Assert.NotNull(url);
+            Assert.NotNull(url.Target);
+            Assert.NotNull(url.ShortUrl);
+        }
+
+        [Theory]
+        [InlineData("https://test-url-that-im-trying-to-shorten-1.com")]
+        [InlineData("https://test-url-that-im-trying-to-shorten-2.com")]
+        [InlineData("https://test-url-that-im-trying-to-shorten-3.com")]
+        public async Task ShortenUrlAsync_ByTarget(string target)
+        {
+            var url = await _repo.ShortenUrlAsync(target);
+
+            Assert.NotNull(url);
+            Assert.NotNull(url.Target);
+            Assert.NotNull(url.ShortUrl);
+        }
     }
 }
