@@ -99,5 +99,26 @@ namespace url.shortener.tests
             Assert.NotNull(url.Target);
             Assert.NotNull(url.ShortUrl);
         }
+
+        [Theory]
+        [InlineData("https://google.com/test/ing")]
+        public void ShortenUrl_ByTarget(string target)
+        {
+            var shortUrl = _repo.ShortenUrl(target);
+        }
+
+        [Theory]
+        [InlineData(5)]
+        public async Task AddShortUrl_AlreadyExists_ViolatesUniqueness(int id)
+        {
+            var url = new GkamaUrl()
+            {
+                Id = id,
+                Target = "https://www.google.com/maps",
+                ShortUrl = "https://gkama.it/5"
+            };
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _repo.AddUrlAsync(url));
+        }
     }
 }

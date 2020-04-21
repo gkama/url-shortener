@@ -63,13 +63,21 @@ namespace url.shortener.services
                     && x.ShortUrl == shortUrl);
         }
 
-        public async Task<IGkamaUrl> AddUrlAsync(string target, string shortUrl = null, bool shorten = false)
+        public async Task<IGkamaUrl> AddUrlAsync(string target)
         {
             var url = new GkamaUrl()
             {
                 Target = target
             };
 
+            await _context.Urls
+                .AddAsync(url);
+
+            return url;
+        }
+
+        public async Task<IGkamaUrl> AddUrlAsync(GkamaUrl url)
+        {
             await _context.Urls
                 .AddAsync(url);
 
@@ -113,6 +121,17 @@ namespace url.shortener.services
         public string ShortenUrl()
         {
             return $"https://gkama.it/{RandomString()}";
+        }
+
+        public string ShortenUrl(string target)
+        {
+            var parsedTarget = target.Replace("https://", "")
+                .Replace("http://", "")
+                .Replace("www.", "")
+                .Replace("www", "")
+                .Split("/");
+
+            return null;
         }
 
         public string RandomString()
