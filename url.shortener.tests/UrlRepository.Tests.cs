@@ -106,7 +106,7 @@ namespace url.shortener.tests
         {
             var url = new GkamaUrl()
             {
-                Id = 5,
+                Id = id,
                 Target = "https://www.google.com/maps",
                 ShortUrl = "https://gkama.it/5"
             };
