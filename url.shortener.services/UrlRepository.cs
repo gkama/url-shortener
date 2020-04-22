@@ -106,21 +106,17 @@ namespace url.shortener.services
         {
             var url = new GkamaUrl()
             {
-                Target = target,
-                ShortUrl = ShortenUrl()
+                Target = target
             };
 
             await _context.Urls
                 .AddAsync(url);
 
+            url.ShortUrl = ShortenUrl(url.Id);
+
             await _context.SaveChangesAsync();
 
             return url;
-        }
-
-        public string ShortenUrl()
-        {
-            return $"https://gkama.it/{RandomString()}";
         }
 
         public string ShortenUrl(string target)
@@ -134,9 +130,16 @@ namespace url.shortener.services
             return null;
         }
 
-        public string RandomString(int id)
+        public string ShortenUrl(int? id = null)
         {
-            return $"{RandomString()}_{Encode(id)}";
+            return $"{Constants.BaseUrl}{RandomString(id)}";
+        }
+
+        public string RandomString(int? id = null)
+        {
+            return id == null
+                ? $"{RandomString()}"
+                : $"{RandomString()}_{Encode((int)id)}";
         }
 
         public string RandomString()

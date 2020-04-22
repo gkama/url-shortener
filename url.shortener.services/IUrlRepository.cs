@@ -18,10 +18,9 @@ namespace url.shortener.services
         Task<IGkamaUrl> AddUrlAsync(GkamaUrl url);
         Task<IGkamaUrl> ShortenUrlAsync(int id);
         Task<IGkamaUrl> ShortenUrlAsync(string target);
-        string ShortenUrl();
         string ShortenUrl(string target);
-        string RandomString(int id);
-        string RandomString();
+        string ShortenUrl(int? id = null);
+        string RandomString(int? id = null);
         string Encode(int id);
     }
 }
