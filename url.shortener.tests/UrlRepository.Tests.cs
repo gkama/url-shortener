@@ -136,6 +136,14 @@ namespace url.shortener.tests
             Assert.NotNull(encodedId);
         }
 
+        [Fact]
+        public void RandomString()
+        {
+            var randomString = _repo.RandomString();
+
+            Assert.NotNull(randomString);
+        }
+
         [Theory]
         [InlineData(1)]
         [InlineData(24)]
