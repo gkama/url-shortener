@@ -161,13 +161,13 @@ namespace url.shortener.services
 
         public string Encode(int id)
         {
-            if (id < Constants.AlphaNumericLength) return Constants.AlphaNumeric[id].ToString();
+            if (id < Constants.AlphaNumericLength) return Constants.AlphaLowerNumeric[id].ToString();
 
             var s = new StringBuilder();
 
             while (id > 0)
             {
-                s.Insert(0, Constants.AlphaNumeric[id % Constants.AlphaNumericLength]);
+                s.Insert(0, Constants.AlphaLowerNumeric[id % Constants.AlphaNumericLength]);
                 id = id / Constants.AlphaNumericLength;
             }
 
