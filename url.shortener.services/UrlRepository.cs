@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
+using System.Diagnostics;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,10 +19,13 @@ namespace url.shortener.services
         private readonly UrlContext _context;
         private readonly ILogger<UrlRepository> _logger;
 
+        private readonly Stopwatch _sw;
+
         public UrlRepository(UrlContext context, ILogger<UrlRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _sw = new Stopwatch();
         }
 
         private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
@@ -34,7 +38,8 @@ namespace url.shortener.services
         public async Task<IEnumerable<IGkamaUrl>> GetUrlsAsync()
         {
             return await GetGkamaUrlsQuery()
-                .OrderBy(x => x.Target)
+                .OrderByDescending(x => x.Id)
+                .Take(100)
                 .ToListAsync();
         }
 
@@ -112,7 +117,11 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            _sw.Start();
             url.ShortUrl = ShortenUrl(url.Id);
+            _sw.Stop();
+
+            _logger.LogInformation($"shorten algorithm took: {_sw.Elapsed.TotalMilliseconds * 1000} µs (microseconds)");
 
             await _context.SaveChangesAsync();
 
