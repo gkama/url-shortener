@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -125,7 +125,7 @@ namespace url.shortener.services
 
         public string ShortenUrl(string target)
         {
-            var parsedTarget = target.Replace("https://", "")
+            var splitTarget = target.Replace("https://", "")
                 .Replace("http://", "")
                 .Replace("www.", "")
                 .Replace("www", "")
@@ -134,11 +134,16 @@ namespace url.shortener.services
             return null;
         }
 
+        public string RandomString(int id)
+        {
+            return $"{RandomString()}_{Encode(id)}";
+        }
+
         public string RandomString()
         {
             return string.Create(10, 2, (buffer, value) =>
             {
-                var alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_".AsSpan();
+                var alphaNumeric = Constants.AlphaNumeric.AsSpan();
                 var random = new Random();
 
                 buffer[9] = alphaNumeric[random.Next(alphaNumeric.Length)];
@@ -152,6 +157,21 @@ namespace url.shortener.services
                 buffer[1] = alphaNumeric[random.Next(alphaNumeric.Length)];
                 buffer[0] = alphaNumeric[random.Next(alphaNumeric.Length)];
             });
+        }
+
+        public string Encode(int id)
+        {
+            if (id < Constants.AlphaNumericLength) return Constants.AlphaNumeric[id].ToString();
+
+            var s = new StringBuilder();
+
+            while (id > 0)
+            {
+                s.Insert(0, Constants.AlphaNumeric[id % Constants.AlphaNumericLength]);
+                id = id / Constants.AlphaNumericLength;
+            }
+
+            return s.ToString();
         }
     }
 }
