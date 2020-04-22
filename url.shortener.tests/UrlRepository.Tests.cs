@@ -120,5 +120,36 @@ namespace url.shortener.tests
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => _repo.AddUrlAsync(url));
         }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(24)]
+        [InlineData(578)]
+        [InlineData(999)]
+        [InlineData(8888)]
+        [InlineData(69723)]
+        [InlineData(789462)]
+        public void EncodeId_Valid(int id)
+        {
+            var encodedId = _repo.Encode(id);
+
+            Assert.NotNull(encodedId);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(24)]
+        [InlineData(578)]
+        [InlineData(999)]
+        [InlineData(8888)]
+        [InlineData(69723)]
+        [InlineData(789462)]
+        public void RandomString_WithId(int id)
+        {
+            var randomString = _repo.RandomString(id);
+
+            Assert.NotNull(randomString);
+            Assert.Contains("_", randomString);
+        }
     }
 }
