@@ -4,7 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text;
+using System.Diagnostics;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,10 +19,13 @@ namespace url.shortener.services
         private readonly UrlContext _context;
         private readonly ILogger<UrlRepository> _logger;
 
+        private readonly Stopwatch _sw;
+
         public UrlRepository(UrlContext context, ILogger<UrlRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _sw = new Stopwatch();
         }
 
         private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
@@ -34,7 +38,8 @@ namespace url.shortener.services
         public async Task<IEnumerable<IGkamaUrl>> GetUrlsAsync()
         {
             return await GetGkamaUrlsQuery()
-                .OrderBy(x => x.Target)
+                .OrderByDescending(x => x.Id)
+                .Take(100)
                 .ToListAsync();
         }
 
@@ -106,26 +111,26 @@ namespace url.shortener.services
         {
             var url = new GkamaUrl()
             {
-                Target = target,
-                ShortUrl = ShortenUrl()
+                Target = target
             };
 
             await _context.Urls
                 .AddAsync(url);
+
+            _sw.Start();
+            url.ShortUrl = ShortenUrl(url.Id);
+            _sw.Stop();
+
+            _logger.LogInformation($"shorten algorithm took: {_sw.Elapsed.TotalMilliseconds * 1000} µs (microseconds)");
 
             await _context.SaveChangesAsync();
 
             return url;
         }
 
-        public string ShortenUrl()
-        {
-            return $"https://gkama.it/{RandomString()}";
-        }
-
         public string ShortenUrl(string target)
         {
-            var parsedTarget = target.Replace("https://", "")
+            var splitTarget = target.Replace("https://", "")
                 .Replace("http://", "")
                 .Replace("www.", "")
                 .Replace("www", "")
@@ -134,11 +139,23 @@ namespace url.shortener.services
             return null;
         }
 
+        public string ShortenUrl(int? id = null)
+        {
+            return $"{Constants.BaseUrl}{RandomString(id)}";
+        }
+
+        public string RandomString(int? id = null)
+        {
+            return id == null
+                ? $"{RandomString()}"
+                : $"{RandomString()}_{Encode((int)id)}";
+        }
+
         public string RandomString()
         {
             return string.Create(10, 2, (buffer, value) =>
             {
-                var alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_".AsSpan();
+                var alphaNumeric = Constants.AlphaNumeric.AsSpan();
                 var random = new Random();
 
                 buffer[9] = alphaNumeric[random.Next(alphaNumeric.Length)];
@@ -152,6 +169,21 @@ namespace url.shortener.services
                 buffer[1] = alphaNumeric[random.Next(alphaNumeric.Length)];
                 buffer[0] = alphaNumeric[random.Next(alphaNumeric.Length)];
             });
+        }
+
+        public string Encode(int id)
+        {
+            if (id < Constants.AlphaNumericLength) return Constants.AlphaLowerNumeric[id].ToString();
+
+            var s = new StringBuilder();
+
+            while (id > 0)
+            {
+                s.Insert(0, Constants.AlphaLowerNumeric[id % Constants.AlphaNumericLength]);
+                id = id / Constants.AlphaNumericLength;
+            }
+
+            return s.ToString();
         }
     }
 }
