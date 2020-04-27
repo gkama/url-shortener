@@ -75,6 +75,14 @@ namespace url.shortener.tests
             Assert.Null(url);
         }
 
+        [Fact]
+        public async Task GetUnsecureUrlsAsync()
+        {
+            var urls = await _repo.GetUnsecureUrlsAsync();
+
+            Assert.Empty(urls);
+        }
+
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
@@ -158,6 +166,26 @@ namespace url.shortener.tests
 
             Assert.NotNull(randomString);
             Assert.Contains("_", randomString);
+        }
+
+        [Theory]
+        [InlineData("https://google.com")]
+        [InlineData("https://gkamacharov.com")]
+        public void IsUrl_True(string url)
+        {
+            Assert.True(_repo.IsUrl(url));
+        }
+
+        [Theory]
+        [InlineData("test")]
+        [InlineData("https/google.com")]
+        [InlineData("http/google.com")]
+        [InlineData("https//google.com")]
+        [InlineData("w.google.com")]
+        [InlineData("www.google.com")]
+        public void IsUrl_False(string url)
+        {
+            Assert.False(_repo.IsUrl(url));
         }
     }
 }

@@ -68,6 +68,13 @@ namespace url.shortener.services
                     && x.ShortUrl == shortUrl);
         }
 
+        public async Task<IEnumerable<IGkamaUrl>> GetUnsecureUrlsAsync()
+        {
+            return await GetGkamaUrlsQuery()
+                .Where(x => x.Target.Take(4).ToString() == "http")
+                .ToListAsync();
+        }
+
         public async Task<IGkamaUrl> AddUrlAsync(string target)
         {
             var url = new GkamaUrl()
@@ -77,6 +84,28 @@ namespace url.shortener.services
 
             await _context.Urls
                 .AddAsync(url);
+
+            await _context.SaveChangesAsync();
+
+            return url;
+        }
+
+        public async Task<IGkamaUrl> AddUrlNotExistAsync(string target)
+        {
+            if (await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.Target == target) != null)
+                throw new UrlException(HttpStatusCode.Found,
+                    $"url with target='{target}' already exists");
+
+            var url = new GkamaUrl()
+            {
+                Target = target
+            };
+
+            await _context.Urls
+                .AddAsync(url);
+
+            await _context.SaveChangesAsync();
 
             return url;
         }
@@ -109,13 +138,7 @@ namespace url.shortener.services
 
         public async Task<IGkamaUrl> ShortenUrlAsync(string target)
         {
-            var url = new GkamaUrl()
-            {
-                Target = target
-            };
-
-            await _context.Urls
-                .AddAsync(url);
+            var url = await AddUrlNotExistAsync(target);
 
             _sw.Start();
             url.ShortUrl = ShortenUrl(url.Id);
@@ -184,6 +207,11 @@ namespace url.shortener.services
             }
 
             return s.ToString();
+        }
+
+        public bool IsUrl(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out _);
         }
     }
 }
