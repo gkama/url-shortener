@@ -78,6 +78,28 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            await _context.SaveChangesAsync();
+
+            return url;
+        }
+
+        public async Task<IGkamaUrl> AddUrlNotExistAsync(string target)
+        {
+            if (await GetGkamaUrlsQuery()
+                .FirstOrDefaultAsync(x => x.Target == target) != null)
+                throw new UrlException(HttpStatusCode.BadRequest,
+                    $"url with target='{target}' already exists");
+
+            var url = new GkamaUrl()
+            {
+                Target = target
+            };
+
+            await _context.Urls
+                .AddAsync(url);
+
+            await _context.SaveChangesAsync();
+
             return url;
         }
 
