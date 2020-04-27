@@ -87,7 +87,7 @@ namespace url.shortener.services
         {
             if (await GetGkamaUrlsQuery()
                 .FirstOrDefaultAsync(x => x.Target == target) != null)
-                throw new UrlException(HttpStatusCode.BadRequest,
+                throw new UrlException(HttpStatusCode.Found,
                     $"url with target='{target}' already exists");
 
             var url = new GkamaUrl()
@@ -131,13 +131,7 @@ namespace url.shortener.services
 
         public async Task<IGkamaUrl> ShortenUrlAsync(string target)
         {
-            var url = new GkamaUrl()
-            {
-                Target = target
-            };
-
-            await _context.Urls
-                .AddAsync(url);
+            var url = await AddUrlNotExistAsync(target);
 
             _sw.Start();
             url.ShortUrl = ShortenUrl(url.Id);
