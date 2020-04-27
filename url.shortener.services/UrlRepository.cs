@@ -201,5 +201,10 @@ namespace url.shortener.services
 
             return s.ToString();
         }
+
+        public bool IsUrl(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out var isUrl);
+        }
     }
 }
