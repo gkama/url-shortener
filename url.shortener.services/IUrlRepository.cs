@@ -14,6 +14,7 @@ namespace url.shortener.services
         Task<IGkamaUrl> GetUrlAsync(Guid publicKey);
         Task<IGkamaUrl> GetUrlAsync(string shortUrl);
         Task<IGkamaUrl> GetUrlAsync(string target, string shortUrl);
+        Task<IEnumerable<IGkamaUrl>> GetUnsecureUrlsAsync();
         Task<IGkamaUrl> AddUrlAsync(string target);
         Task<IGkamaUrl> AddUrlAsync(GkamaUrl url);
         Task<IGkamaUrl> AddUrlNotExistAsync(string target);

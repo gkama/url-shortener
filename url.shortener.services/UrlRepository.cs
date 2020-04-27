@@ -68,6 +68,13 @@ namespace url.shortener.services
                     && x.ShortUrl == shortUrl);
         }
 
+        public async Task<IEnumerable<IGkamaUrl>> GetUnsecureUrlsAsync()
+        {
+            return await GetGkamaUrlsQuery()
+                .Where(x => x.Target.StartsWith("http"))
+                .ToListAsync();
+        }
+
         public async Task<IGkamaUrl> AddUrlAsync(string target)
         {
             var url = new GkamaUrl()
