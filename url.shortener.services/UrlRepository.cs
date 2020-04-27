@@ -71,7 +71,7 @@ namespace url.shortener.services
         public async Task<IEnumerable<IGkamaUrl>> GetUnsecureUrlsAsync()
         {
             return await GetGkamaUrlsQuery()
-                .Where(x => x.Target.StartsWith("http"))
+                .Where(x => x.Target.Take(4).ToString() == "http")
                 .ToListAsync();
         }
 

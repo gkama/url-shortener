@@ -75,6 +75,14 @@ namespace url.shortener.tests
             Assert.Null(url);
         }
 
+        [Fact]
+        public async Task GetUnsecureUrlsAsync()
+        {
+            var urls = await _repo.GetUnsecureUrlsAsync();
+
+            Assert.Empty(urls);
+        }
+
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
