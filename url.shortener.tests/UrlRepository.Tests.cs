@@ -187,5 +187,16 @@ namespace url.shortener.tests
         {
             Assert.False(_repo.IsUrl(url));
         }
+
+        [Theory]
+        [InlineData("https://google.com")]
+        [InlineData("https://google.com/test")]
+        [InlineData("https://google.com/a/b/c/d")]
+        public void GetUrl_Valid(string url)
+        {
+            var uri = _repo.GetUrl(url);
+
+            Assert.Equal("google.com", uri.Host);
+        }
     }
 }
