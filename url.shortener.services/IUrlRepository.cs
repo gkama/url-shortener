@@ -25,5 +25,6 @@ namespace url.shortener.services
         string RandomString(int? id = null);
         string Encode(int id);
         bool IsUrl(string url);
+        Uri GetUrl(string url);
     }
 }
