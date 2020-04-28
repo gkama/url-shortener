@@ -153,11 +153,8 @@ namespace url.shortener.services
 
         public string ShortenUrl(string target)
         {
-            var splitTarget = target.Replace("https://", "")
-                .Replace("http://", "")
-                .Replace("www.", "")
-                .Replace("www", "")
-                .Split("/");
+            var uri = GetUrl(target);
+
 
             return null;
         }
@@ -212,6 +209,12 @@ namespace url.shortener.services
         public bool IsUrl(string url)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out _);
+        }
+        public Uri GetUrl(string url)
+        {
+            Uri.TryCreate(url, UriKind.Absolute, out var uri);
+
+            return uri;
         }
     }
 }
