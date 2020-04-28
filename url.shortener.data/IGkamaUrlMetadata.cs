@@ -4,8 +4,9 @@ namespace url.shortener.data
 {
     public interface IGkamaUrlMetadata
     {
-        Guid PublicKey { get; set; }
         string Target { get; set; }
+        Guid PublicKey { get; set; }
+        DateTime CreatedAt { get; set; }
         string Scheme { get; set; }
         string Domain { get; set; }
         string Port { get; set; }
