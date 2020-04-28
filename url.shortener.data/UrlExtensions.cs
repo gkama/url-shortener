@@ -18,7 +18,8 @@ namespace url.shortener.data
             Uri.TryCreate(url, UriKind.Absolute, out var uri);
 
             return uri == null
-                ? new GkamaUrlMetadata()
+                ? null
+                : new GkamaUrlMetadata()
                 {
                     Target = url,
                     Scheme = uri.Scheme,
@@ -27,8 +28,7 @@ namespace url.shortener.data
                     Path = uri.LocalPath,
                     Query = uri.Query,
                     Fragment = uri.Fragment
-                }
-                : null;
+                };
         }
     }
 }
