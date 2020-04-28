@@ -11,7 +11,7 @@ namespace url.shortener.data
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Scheme { get; set; }
         public string Domain { get; set; }
-        public string Port { get; set; }
+        public int Port { get; set; }
         public string Path { get; set; }
         public string Query { get; set; }
         public string Fragment { get; set; }

@@ -9,7 +9,7 @@ namespace url.shortener.data
         DateTime CreatedAt { get; set; }
         string Scheme { get; set; }
         string Domain { get; set; }
-        string Port { get; set; }
+        int Port { get; set; }
         string Path { get; set; }
         string Query { get; set; }
         string Fragment { get; set; }
