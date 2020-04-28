@@ -23,7 +23,9 @@ namespace url.shortener.services
         string ShortenUrl(string target);
         string ShortenUrl(int? id = null);
         string RandomString(int? id = null);
+        string RandomString();
         string Encode(int id);
         bool IsUrl(string url);
+        Uri GetUrl(string url);
     }
 }

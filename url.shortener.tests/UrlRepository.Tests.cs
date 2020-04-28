@@ -116,6 +116,18 @@ namespace url.shortener.tests
         }
 
         [Theory]
+        [InlineData(1)]
+        [InlineData(58)]
+        [InlineData(782)]
+        [InlineData(4819)]
+        [InlineData(40192)]
+        [InlineData(6835325)]
+        public void ShortenUrl_ById(int id)
+        {
+            Assert.NotNull(_repo.ShortenUrl(id));
+        }
+
+        [Theory]
         [InlineData(5)]
         public async Task AddShortUrl_AlreadyExists_ViolatesUniqueness(int id)
         {
@@ -186,6 +198,17 @@ namespace url.shortener.tests
         public void IsUrl_False(string url)
         {
             Assert.False(_repo.IsUrl(url));
+        }
+
+        [Theory]
+        [InlineData("https://google.com")]
+        [InlineData("https://google.com/test")]
+        [InlineData("https://google.com/a/b/c/d")]
+        public void GetUrl_Valid(string url)
+        {
+            var uri = _repo.GetUrl(url);
+
+            Assert.Equal("google.com", uri.Host);
         }
     }
 }
