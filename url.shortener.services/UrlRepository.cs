@@ -106,6 +106,7 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            // TODO update extension method to use GkamaUrl (and store UrlId)
             await _context.UrlMetadata
                 .AddAsync(url.Target.ParseUri());
 
