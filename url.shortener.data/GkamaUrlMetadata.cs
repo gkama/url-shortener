@@ -4,9 +4,10 @@ using System.Text;
 
 namespace url.shortener.data
 {
-    public class GkamaUrlMetadata : IGkamaUrlMetadata
+    public class GkamaUrlMetadata : IPublicKeyId, IGkamaUrlMetadata
     {
-        public string Target { get; set; }
+        public int Id { get; set; }
+        public int UrlId { get; set; }
         public Guid PublicKey { get; set; } = Guid.NewGuid();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Scheme { get; set; }
@@ -15,6 +16,5 @@ namespace url.shortener.data
         public string Path { get; set; }
         public string Query { get; set; }
         public string Fragment { get; set; }
-        public GkamaUrl Url { get; set; }
     }
 }

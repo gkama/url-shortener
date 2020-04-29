@@ -31,6 +31,7 @@ namespace url.shortener.services
         private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
         {
             return _context.Urls
+                .Include(x => x.Metadata)
                 .AsNoTracking()
                 .AsQueryable();
         }

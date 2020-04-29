@@ -21,7 +21,6 @@ namespace url.shortener.data
                 ? null
                 : new GkamaUrlMetadata()
                 {
-                    Target = url,
                     Scheme = uri.Scheme,
                     Domain = uri.Host,
                     Port = uri.Port,
