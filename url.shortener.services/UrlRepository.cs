@@ -106,6 +106,9 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            await _context.UrlMetadata
+                .AddAsync(url.Target.ParseUri());
+
             await _context.SaveChangesAsync();
 
             return url;
