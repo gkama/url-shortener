@@ -11,5 +11,6 @@ namespace url.shortener.data
         DateTime CreatedAt { get; set; }
         string Target { get; set; }
         string ShortUrl { get; set; }
+        GkamaUrlMetadata Metadata { get; set; }
     }
 }

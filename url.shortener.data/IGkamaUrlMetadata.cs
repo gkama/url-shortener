@@ -13,5 +13,6 @@ namespace url.shortener.data
         string Path { get; set; }
         string Query { get; set; }
         string Fragment { get; set; }
+        GkamaUrl Url { get; set; }
     }
 }
