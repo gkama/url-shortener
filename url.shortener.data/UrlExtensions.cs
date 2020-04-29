@@ -13,7 +13,7 @@ namespace url.shortener.data
             return uri;
         }
 
-        public static IGkamaUrlMetadata ParseUri(this string url)
+        public static GkamaUrlMetadata ParseUri(this string url)
         {
             Uri.TryCreate(url, UriKind.Absolute, out var uri);
 
