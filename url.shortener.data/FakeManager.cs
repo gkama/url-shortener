@@ -21,6 +21,9 @@ namespace url.shortener.data
             _context.Urls
                 .AddRange(GetFakeGkamaUrls());
 
+            _context.UrlMetadata
+                .AddRange(GetFakeGkamaUrlMetadata());
+
             _context.SaveChanges();
         }
 
@@ -60,6 +63,25 @@ namespace url.shortener.data
                     PublicKey = new Guid("ec3171ff-b029-4b73-8994-005a3712d54b"),
                     Target = "https://www.google.com/maps",
                     ShortUrl = "https://gkama.it/5"
+                }
+            };
+        }
+
+        public IEnumerable<GkamaUrlMetadata> GetFakeGkamaUrlMetadata()
+        {
+            return new List<GkamaUrlMetadata>()
+            {
+                new GkamaUrlMetadata()
+                {
+                    Id = 1,
+                    UrlId = 5,
+                    Domain = "google.com"
+                },
+                new GkamaUrlMetadata()
+                {
+                    Id = 2,
+                    UrlId = 4,
+                    Domain = "google.com"
                 }
             };
         }

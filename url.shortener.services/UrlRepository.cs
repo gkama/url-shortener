@@ -31,6 +31,7 @@ namespace url.shortener.services
         private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
         {
             return _context.Urls
+                .Include(x => x.Metadata)
                 .AsNoTracking()
                 .AsQueryable();
         }
@@ -104,6 +105,10 @@ namespace url.shortener.services
 
             await _context.Urls
                 .AddAsync(url);
+
+            // TODO update extension method to use GkamaUrl (and store UrlId)
+            await _context.UrlMetadata
+                .AddAsync(url.Target.ParseUri());
 
             await _context.SaveChangesAsync();
 

@@ -9,5 +9,6 @@ namespace url.shortener.data
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Target { get; set; }
         public string ShortUrl { get; set; }
+        public GkamaUrlMetadata Metadata { get; set; }
     }
 }
