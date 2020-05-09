@@ -149,7 +149,14 @@ namespace url.shortener.services
 
         public async Task DeleteUrlMetadataAsync(int id)
         {
-            //
+            var urlMetadata = await GetUrlMetadataAsync(id)
+                ?? throw new UrlException(HttpStatusCode.BadRequest,
+                    $"error while deleting url metadata with id='{id}'. it doesn't exist");
+
+            _context.UrlMetadata
+                .Remove(urlMetadata);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
