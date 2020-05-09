@@ -122,6 +122,18 @@ namespace url.shortener.services
             return url;
         }
 
+        public async Task DeleteUrlAsync(int id)
+        {
+            var url = await GetUrlAsync(id) as GkamaUrl
+                ?? throw new UrlException(HttpStatusCode.BadRequest,
+                    $"error while deleting url with id='{id}'. it doesn't exist");
+
+            _context.Urls
+                .Remove(url);
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
         {
             var url = await GetUrlAsync(id);

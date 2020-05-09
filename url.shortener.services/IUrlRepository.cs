@@ -18,6 +18,7 @@ namespace url.shortener.services
         Task<IGkamaUrl> AddUrlAsync(string target);
         Task<IGkamaUrl> AddUrlAsync(GkamaUrl url);
         Task<IGkamaUrl> AddUrlNotExistAsync(string target);
+        Task DeleteUrlAsync(int id);
         Task<IGkamaUrl> ShortenUrlAsync(int id);
         Task<IGkamaUrl> ShortenUrlAsync(string target);
         string ShortenUrl(string target);
