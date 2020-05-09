@@ -36,6 +36,13 @@ namespace url.shortener.services
                 .AsQueryable();
         }
 
+        private IQueryable<GkamaUrlMetadata> GetGkamaUrlMetadataQuery()
+        {
+            return _context.UrlMetadata
+                .AsNoTracking()
+                .AsQueryable();
+        }
+
         public async Task<IEnumerable<IGkamaUrl>> GetUrlsAsync()
         {
             return await GetGkamaUrlsQuery()
@@ -74,6 +81,12 @@ namespace url.shortener.services
             return await GetGkamaUrlsQuery()
                 .Where(x => x.Target.Take(4).ToString() == "http")
                 .ToListAsync();
+        }
+
+        public async Task<GkamaUrlMetadata> GetUrlMetadataAsync(int id)
+        {
+            return await GetGkamaUrlMetadataQuery()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IGkamaUrl> AddUrlAsync(string target)
@@ -132,6 +145,11 @@ namespace url.shortener.services
                 .Remove(url);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUrlMetadataAsync(int id)
+        {
+            //
         }
 
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
