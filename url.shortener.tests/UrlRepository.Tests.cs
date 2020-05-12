@@ -142,6 +142,23 @@ namespace url.shortener.tests
         }
 
         [Theory]
+        [InlineData(100)]
+        [InlineData(101)]
+        public async Task DeleteUrlAsync_AddThenDelete(int id)
+        {
+            var url = new GkamaUrl()
+            {
+                Id = id,
+                Target = "https://google.com"
+            };
+
+            await _repo.AddUrlAsync(url);
+            await _repo.DeleteUrlAsync(id);
+
+            Assert.Null(await _repo.GetUrlAsync(id));
+        }
+
+        [Theory]
         [InlineData(1)]
         [InlineData(24)]
         [InlineData(578)]
@@ -209,6 +226,15 @@ namespace url.shortener.tests
             var uri = _repo.GetUrl(url);
 
             Assert.Equal("google.com", uri.Host);
+        }
+
+        [Theory]
+        [InlineData("test1")]
+        [InlineData("test2")]
+        [InlineData("google")]
+        public void GetUrl_Invalid(string url)
+        {
+            Assert.Null(_repo.GetUrl(url));
         }
     }
 }

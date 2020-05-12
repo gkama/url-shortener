@@ -28,10 +28,21 @@ namespace url.shortener.services
             _sw = new Stopwatch();
         }
 
-        private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
+        private IQueryable<GkamaUrl> GetGkamaUrlsQuery(bool asNoTracking = true)
         {
-            return _context.Urls
-                .Include(x => x.Metadata)
+            return asNoTracking
+                ? _context.Urls
+                    .Include(x => x.Metadata)
+                    .AsNoTracking()
+                    .AsQueryable()
+                : _context.Urls
+                    .Include(x => x.Metadata)
+                    .AsQueryable();
+        }
+
+        private IQueryable<GkamaUrlMetadata> GetGkamaUrlMetadataQuery()
+        {
+            return _context.UrlMetadata
                 .AsNoTracking()
                 .AsQueryable();
         }
@@ -44,9 +55,9 @@ namespace url.shortener.services
                 .ToListAsync();
         }
 
-        public async Task<IGkamaUrl> GetUrlAsync(int id)
+        public async Task<IGkamaUrl> GetUrlAsync(int id, bool asNoTracking = true)
         {
-            return await GetGkamaUrlsQuery()
+            return await GetGkamaUrlsQuery(asNoTracking)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -74,6 +85,12 @@ namespace url.shortener.services
             return await GetGkamaUrlsQuery()
                 .Where(x => x.Target.Take(4).ToString() == "http")
                 .ToListAsync();
+        }
+
+        public async Task<GkamaUrlMetadata> GetUrlMetadataAsync(int id)
+        {
+            return await GetGkamaUrlMetadataQuery()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IGkamaUrl> AddUrlAsync(string target)
@@ -106,7 +123,6 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
-            // TODO update extension method to use GkamaUrl (and store UrlId)
             await _context.UrlMetadata
                 .AddAsync(url.Target.ParseUri());
 
@@ -120,7 +136,33 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            await _context.SaveChangesAsync();
+
             return url;
+        }
+
+        public async Task DeleteUrlAsync(int id)
+        {
+            var url = await GetUrlAsync(id, asNoTracking: false) as GkamaUrl
+                ?? throw new UrlException(HttpStatusCode.BadRequest,
+                    $"error while deleting url with id='{id}'. it doesn't exist");
+
+            _context.Urls
+                .Remove(url);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUrlMetadataAsync(int id)
+        {
+            var urlMetadata = await GetUrlMetadataAsync(id)
+                ?? throw new UrlException(HttpStatusCode.BadRequest,
+                    $"error while deleting url metadata with id='{id}'. it doesn't exist");
+
+            _context.UrlMetadata
+                .Remove(urlMetadata);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IGkamaUrl> ShortenUrlAsync(int id)
