@@ -142,6 +142,23 @@ namespace url.shortener.tests
         }
 
         [Theory]
+        [InlineData(100)]
+        [InlineData(101)]
+        public async Task DeleteUrlAsync_AddThenDelete(int id)
+        {
+            var url = new GkamaUrl()
+            {
+                Id = id,
+                Target = "https://google.com"
+            };
+
+            await _repo.AddUrlAsync(url);
+            await _repo.DeleteUrlAsync(id);
+
+            Assert.Null(await _repo.GetUrlAsync(id));
+        }
+
+        [Theory]
         [InlineData(1)]
         [InlineData(24)]
         [InlineData(578)]
