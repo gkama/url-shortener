@@ -10,7 +10,7 @@ namespace url.shortener.services
     public interface IUrlRepository
     {
         Task<IEnumerable<IGkamaUrl>> GetUrlsAsync();
-        Task<IGkamaUrl> GetUrlAsync(int id);
+        Task<IGkamaUrl> GetUrlAsync(int id, bool asNoTracking = true);
         Task<IGkamaUrl> GetUrlAsync(Guid publicKey);
         Task<IGkamaUrl> GetUrlAsync(string shortUrl);
         Task<IGkamaUrl> GetUrlAsync(string target, string shortUrl);

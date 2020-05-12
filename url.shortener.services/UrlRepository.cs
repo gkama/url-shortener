@@ -28,12 +28,16 @@ namespace url.shortener.services
             _sw = new Stopwatch();
         }
 
-        private IQueryable<GkamaUrl> GetGkamaUrlsQuery()
+        private IQueryable<GkamaUrl> GetGkamaUrlsQuery(bool asNoTracking = true)
         {
-            return _context.Urls
-                .Include(x => x.Metadata)
-                .AsNoTracking()
-                .AsQueryable();
+            return asNoTracking
+                ? _context.Urls
+                    .Include(x => x.Metadata)
+                    .AsNoTracking()
+                    .AsQueryable()
+                : _context.Urls
+                    .Include(x => x.Metadata)
+                    .AsQueryable();
         }
 
         private IQueryable<GkamaUrlMetadata> GetGkamaUrlMetadataQuery()
@@ -51,9 +55,9 @@ namespace url.shortener.services
                 .ToListAsync();
         }
 
-        public async Task<IGkamaUrl> GetUrlAsync(int id)
+        public async Task<IGkamaUrl> GetUrlAsync(int id, bool asNoTracking = true)
         {
-            return await GetGkamaUrlsQuery()
+            return await GetGkamaUrlsQuery(asNoTracking)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -132,12 +136,14 @@ namespace url.shortener.services
             await _context.Urls
                 .AddAsync(url);
 
+            await _context.SaveChangesAsync();
+
             return url;
         }
 
         public async Task DeleteUrlAsync(int id)
         {
-            var url = await GetUrlAsync(id) as GkamaUrl
+            var url = await GetUrlAsync(id, asNoTracking: false) as GkamaUrl
                 ?? throw new UrlException(HttpStatusCode.BadRequest,
                     $"error while deleting url with id='{id}'. it doesn't exist");
 
