@@ -210,5 +210,14 @@ namespace url.shortener.tests
 
             Assert.Equal("google.com", uri.Host);
         }
+
+        [Theory]
+        [InlineData("test1")]
+        [InlineData("test2")]
+        [InlineData("google")]
+        public void GetUrl_Invalid(string url)
+        {
+            Assert.Null(_repo.GetUrl(url));
+        }
     }
 }
