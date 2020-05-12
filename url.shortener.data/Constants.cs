@@ -17,6 +17,7 @@ namespace url.shortener.data
          */
         public static ReadOnlySpan<char> AlphaNumericSpan => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".AsSpan();
         public static ReadOnlySpan<char> AlphaLowerNumericSpan => "abcdefghijklmnopqrstuvwxyz0123456789".AsSpan();
+        public static int AlphaLowerNumericSpanLength => AlphaLowerNumericSpan.Length;
 
         public static ReadOnlySpan<char> BaseUrlSpan => "http://gkama.it/".AsSpan();
     }
