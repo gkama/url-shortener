@@ -1,23 +1,28 @@
 # Overview
+
 Modern URL shortener
 
 ## Stack
+
 - ASP.NET Core 3.1
 - EntityFrameworkCore with PostgreSQL
 - Docker (docker-compose)
 
 ## How it works
+
 `/url/shorten` - all you need to specify is the target URL that needs to get shortened. Example:
 
 Request
-```json
+
+``` json
 {
   "target": "https://google.com/gokasokdoakdaaaaw123o"
 }
 ```
 
 Response
-```json
+
+``` json
 {
   "id": 4,
   "publicKey": "fe2a2e83-b666-4191-a6a9-17ca68f720aa",
@@ -31,4 +36,5 @@ Randomly generating a 10 character long alphanumeric string to append to the sho
 It uses `Span<T>` and `string.Create()` as the main methods of string creation
 
 ### Resources
+
 - [Adam Sitnik - Span - Introduction](https://adamsitnik.com/Span/#introduction)
