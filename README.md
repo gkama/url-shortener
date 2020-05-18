@@ -37,9 +37,22 @@ It uses `Span<T>` and `string.Create()` as the main methods of string creation
 
 ### GkamaURL Metadata
 
-There is additional metadata that is stored in a separate table ccalled `gkama_url_metadata`. An example of such data is the domain, path, query, fragment, etc. It is extracted using C#'s `System.Uri` class. The logic converts the `string` URL to an `System.Uri` and extracts the information from it. Most of the fields are nullable as they're not always needed
+There is additional metadata that is stored in a separate table ccalled `gkama_url_metadata`. An example of such data is the domain, path, query, fragment, etc. It is extracted using C#'s `System.Uri` class. The logic converts the `string` URL to an `System.Uri` and extracts the information from it. Most of the fields are nullable as they're not always needed. Below is an example
 
-
+``` json
+{
+  "id": 1,
+  "urlId": 5,
+  "publicKey": "d58bde73-dff6-457e-a2b3-f65eae2392e5",
+  "createdAt": "2020-05-18T15:46:49.6928752Z",
+  "scheme": null,
+  "domain": "google.com",
+  "port": 0,
+  "path": null,
+  "query": null,
+  "fragment": null
+}
+```
 
 ### Resources
 
