@@ -93,6 +93,13 @@ namespace url.shortener.services
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<GkamaUrlMetadata> GetUrlMetadataByUrlIdAsync(int id)
+        {
+            return await GetGkamaUrlsQuery()
+                .Select(x => x.Metadata)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IGkamaUrl> AddUrlAsync(string target)
         {
             var url = new GkamaUrl()
