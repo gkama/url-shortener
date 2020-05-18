@@ -63,5 +63,12 @@ namespace url.shortener.core.Controllers
         {
             return Ok(await _repo.ShortenUrlAsync(req.GetProperty("target").ToString()));
         }
+
+        [HttpGet]
+        [Route("{id}/metadata")]
+        public async Task<IActionResult> GetUrlMetadataAsync([FromRoute]int id)
+        {
+            return Ok(await _repo.GetUrlMetadataByUrlIdAsync(id));
+        }
     }
 }
