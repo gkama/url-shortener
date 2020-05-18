@@ -35,6 +35,12 @@ Response
 Randomly generating a 10 character long alphanumeric string to append to the shorten url. This is done via the `RandomString()` method.
 It uses `Span<T>` and `string.Create()` as the main methods of string creation
 
+### GkamaURL Metadata
+
+There is additional metadata that is stored in a separate table ccalled `gkama_url_metadata`. An example of such data is the domain, path, query, fragment, etc. It is extracted using C#'s `System.Uri` class. The logic converts the `string` URL to an `System.Uri` and extracts the information from it. Most of the fields are nullable as they're not always needed
+
+
+
 ### Resources
 
 - [Adam Sitnik - Span - Introduction](https://adamsitnik.com/Span/#introduction)
