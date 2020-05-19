@@ -229,7 +229,7 @@ namespace url.shortener.services
         {
             return string.Create(10, 2, (buffer, value) =>
             {
-                var alphaNumeric = Constants.AlphaNumeric.AsSpan();
+                var alphaNumeric = Constants.AlphaNumericSpan;
                 var random = new Random();
 
                 buffer[9] = alphaNumeric[random.Next(alphaNumeric.Length)];

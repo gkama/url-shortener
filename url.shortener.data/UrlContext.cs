@@ -33,7 +33,8 @@ namespace url.shortener.data
 
                 e.HasOne(x => x.Metadata)
                     .WithOne()
-                    .HasForeignKey<GkamaUrlMetadata>(x => x.UrlId);
+                    .HasForeignKey<GkamaUrlMetadata>(x => x.UrlId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<GkamaUrlMetadata>(e =>
