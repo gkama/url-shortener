@@ -165,7 +165,7 @@ namespace url.shortener.services
 
         public async Task DeleteUrlMetadataAsync(int id)
         {
-            var urlMetadata = await GetUrlMetadataAsync(id)
+            var urlMetadata = await GetUrlMetadataAsync(id, asNoTracking: false)
                 ?? throw new UrlException(HttpStatusCode.BadRequest,
                     $"error while deleting url metadata with id='{id}'. it doesn't exist");
 
