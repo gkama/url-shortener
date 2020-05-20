@@ -144,7 +144,7 @@ namespace url.shortener.tests
         [Theory]
         [InlineData(100)]
         [InlineData(101)]
-        public async Task DeleteUrlAsync_AddThenDelete(int id)
+        public async Task AddUrlAsync_AddThenDelete(int id)
         {
             var url = new GkamaUrl()
             {
@@ -235,6 +235,16 @@ namespace url.shortener.tests
         public void GetUrl_Invalid(string url)
         {
             Assert.Null(_repo.GetUrl(url));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public async Task DeleteGkamaUrlMetadataAsync(int id)
+        {
+            await _repo.DeleteUrlMetadataAsync(id);
+
+            Assert.Null(await _repo.GetUrlMetadataAsync(id));
         }
     }
 }
