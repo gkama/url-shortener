@@ -40,11 +40,14 @@ namespace url.shortener.services
                     .AsQueryable();
         }
 
-        private IQueryable<GkamaUrlMetadata> GetGkamaUrlMetadataQuery()
+        private IQueryable<GkamaUrlMetadata> GetGkamaUrlMetadataQuery(bool asNoTracking = true)
         {
-            return _context.UrlMetadata
-                .AsNoTracking()
-                .AsQueryable();
+            return asNoTracking
+                ? _context.UrlMetadata
+                    .AsNoTracking()
+                    .AsQueryable()
+                : _context.UrlMetadata
+                    .AsQueryable();
         }
 
         public async Task<IEnumerable<IGkamaUrl>> GetUrlsAsync()
@@ -87,9 +90,9 @@ namespace url.shortener.services
                 .ToListAsync();
         }
 
-        public async Task<GkamaUrlMetadata> GetUrlMetadataAsync(int id)
+        public async Task<GkamaUrlMetadata> GetUrlMetadataAsync(int id, bool asNoTracking = true)
         {
-            return await GetGkamaUrlMetadataQuery()
+            return await GetGkamaUrlMetadataQuery(asNoTracking)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
